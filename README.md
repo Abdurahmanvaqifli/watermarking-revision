@@ -23,11 +23,12 @@ Code, configuration, trained decoders and per-image measurements for the paper:
 | `model_DCT-DWT.joblib`, `model_DCT-DWT-SVD.joblib` | Trained decoders (scikit-learn scaler + MLP); load with `joblib.load` |
 | `stats_method_comparison.csv` | Paired Wilcoxon tests, method A vs. method B (Holm-corrected) |
 | `stats_nn_vs_classical.csv` | Paired Wilcoxon tests, neural network vs. classical decoder (Holm-corrected) |
-| `results_nn_s2027/`, `results_nn_s2028/` | Repeated training runs of the neural network decoder with training seeds 2027 and 2028 (`per_image.csv`, `config.json`, `training_log.csv`) |
+| `per_image_nn_s2027.csv`, `config_nn_s2027.json`, `training_log_s2027.csv` | Repeated training run of the neural network decoder with training seed 2027 |
+| `per_image_nn_s2028.csv`, `config_nn_s2028.json`, `training_log_s2028.csv` | Repeated training run of the neural network decoder with training seed 2028 |
 | `stats_nn_vs_classical_3runs.csv` | Decoder comparison over the three training runs (Table 4): run-averaged BER, SD across runs, Holm-corrected tests, number of significant runs |
 | `training_log_3runs.csv` | Training loss and validation BER of all three runs (Fig. 4) |
 
-The scripts write their outputs to the folder given by `--out` (`results` and `results_nn` in the commands below); the files above are those outputs, renamed with the suffix `_nn` for the neural network run.
+The scripts write their outputs to the folder given by `--out` (`results` and `results_nn` in the commands below); the files above are those outputs, renamed with the suffix `_nn` for the neural network run and `_s2027`/`_s2028` for the repeated training runs.
 
 ## Data
 
