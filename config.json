@@ -1,0 +1,25 @@
+{
+  "images": "val2017",
+  "n": 1000,
+  "size": 512,
+  "wm_side": 32,
+  "delta_a": 48.0,
+  "delta_b": 48.0,
+  "seed": 2026,
+  "split": "test",
+  "out": "/content/drive/MyDrive/wm_revision/results",
+  "levels": 2,
+  "block": 4,
+  "payload_bits": 1024,
+  "capacity_bits": 1024,
+  "n_evaluated": 150,
+  "dct_coefficient_method_a": [
+    0,
+    1
+  ],
+  "python": "3.13.16",
+  "numpy": "2.1.3",
+  "opencv": "4.14.0",
+  "cpu": "x86_64",
+  "os": "Linux-6.6.122+-x86_64-with-glibc2.39"
+}

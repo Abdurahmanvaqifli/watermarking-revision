@@ -1,0 +1,68 @@
+{
+  "images": "val2017",
+  "n": 1000,
+  "size": 512,
+  "wm_side": 32,
+  "delta_a": 48.0,
+  "delta_b": 48.0,
+  "draws": 6,
+  "per_img": 256,
+  "hidden": [
+    64,
+    64
+  ],
+  "lr": 0.001,
+  "batch": 512,
+  "l2": 0.0001,
+  "epochs": 30,
+  "seed": 2026,
+  "out": "/content/drive/MyDrive/wm_revision/results_nn",
+  "methods": [
+    "DCT-DWT",
+    "DCT-DWT-SVD"
+  ],
+  "levels": 2,
+  "block": 4,
+  "payload_bits": 1024,
+  "gain_grid": {
+    "DCT-DWT": [
+      0.5,
+      1.1,
+      61
+    ],
+    "DCT-DWT-SVD": [
+      0.97,
+      1.03,
+      61
+    ]
+  },
+  "n_train_images": 700,
+  "n_val_images": 150,
+  "n_test_images": 150,
+  "models": {
+    "DCT-DWT": {
+      "train_rows": 1075200,
+      "val_rows": 307200,
+      "n_features": 26,
+      "best_val_ber": 0.06950846354166666,
+      "best_epoch": 23,
+      "n_parameters": 5953,
+      "train_time_s": 780.286839694
+    },
+    "DCT-DWT-SVD": {
+      "train_rows": 1075200,
+      "val_rows": 307200,
+      "n_features": 26,
+      "best_val_ber": 0.08617513020833334,
+      "best_epoch": 14,
+      "n_parameters": 5953,
+      "train_time_s": 1159.401857627
+    }
+  },
+  "python": "3.13.16",
+  "sklearn": "1.6.1",
+  "numpy": "2.1.3",
+  "opencv": "4.14.0",
+  "cpu": "x86_64",
+  "os": "Linux-6.6.122+-x86_64-with-glibc2.39"
+}
