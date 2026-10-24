@@ -116,8 +116,8 @@ def build_set(items, cfg, method, nbits, draws, per_img, rng, seed):
 def train_mlp(Xtr, Ytr, Xva, Yva, a, log):
     sc = StandardScaler().fit(Xtr); Xtr, Xva = sc.transform(Xtr), sc.transform(Xva)
     mlp = MLPClassifier(hidden_layer_sizes=tuple(a.hidden), activation="relu", solver="adam",
-                        learning_rate_init=a.lr, batch_size=a.batch, alpha=a.l2, random_state=a.seed)
-    rng = np.random.default_rng(a.seed); best, best_ber = None, 1.0
+                        learning_rate_init=a.lr, batch_size=a.batch, alpha=a.l2, random_state=a.train_seed)
+    rng = np.random.default_rng(a.train_seed); best, best_ber = None, 1.0
     for ep in range(1, a.epochs + 1):
         perm = rng.permutation(len(Xtr))
         for b in range(0, len(perm), 65536):                 # partial_fit over shuffled chunks = one epoch
@@ -138,9 +138,15 @@ def main():
     ap.add_argument("--hidden", type=int, nargs="+", default=[64, 64])
     ap.add_argument("--lr", type=float, default=1e-3); ap.add_argument("--batch", type=int, default=512)
     ap.add_argument("--l2", type=float, default=1e-4); ap.add_argument("--epochs", type=int, default=30)
-    ap.add_argument("--seed", type=int, default=2026); ap.add_argument("--out", default="results_nn")
+    ap.add_argument("--seed", type=int, default=2026, help="data seed: image subset, split, test keys/watermarks, test attacks")
+    ap.add_argument("--train_seed", type=int, default=None,
+                    help="training seed: training watermarks/keys/attacks, weight initialisation, shuffling "
+                         "(default = --seed, which reproduces the original run)")
+    ap.add_argument("--out", default="results_nn")
     ap.add_argument("--methods", nargs="+", default=["DCT-DWT", "DCT-DWT-SVD"])
     a = ap.parse_args(); os.makedirs(a.out, exist_ok=True)
+    if a.train_seed is None: a.train_seed = a.seed
+    key_off = 0 if a.train_seed == a.seed else a.train_seed * 1000003   # different training keys for repeated runs
 
     paths = sorted(glob.glob(os.path.join(a.images, "*.jpg")) + glob.glob(os.path.join(a.images, "*.png")))
     rng = np.random.default_rng(a.seed)
@@ -158,7 +164,8 @@ def main():
     for m in a.methods:
         print(f"== {m}: building training/validation sets", flush=True)
         t0 = time.perf_counter()
-        Xtr, Ytr = build_set(items["train"], cfg, m, nbits, a.draws, a.per_img, np.random.default_rng(a.seed + 11), a.seed)
+        train_items = [(p, i, k + key_off) for (p, i, k) in items["train"]]
+        Xtr, Ytr = build_set(train_items, cfg, m, nbits, a.draws, a.per_img, np.random.default_rng(a.train_seed + 11), a.seed)
         Xva, Yva = build_set(items["val"], cfg, m, nbits, 2, nbits, np.random.default_rng(a.seed + 12), a.seed)
         print(f"   train {Xtr.shape}, val {Xva.shape}", flush=True)
         log = []; sc, mlp, vb = train_mlp(Xtr, Ytr, Xva, Yva, a, log)
